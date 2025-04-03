@@ -54,31 +54,6 @@
                             @enderror
                         </div>
 
-                        <!-- Password -->
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input id="password" type="password"
-                                   class="form-control @error('password') is-invalid @enderror"
-                                   name="password"
-                                   required
-                                   placeholder="Minimal 8 karakter">
-                            @error('password')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-
-                        <!-- Confirm Password -->
-                        <div class="mb-3">
-                            <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
-                            <input id="password_confirmation" type="password"
-                                   class="form-control"
-                                   name="password_confirmation"
-                                   required
-                                   placeholder="Ketik ulang password">
-                        </div>
-
                         <div class="d-grid gap-2 mt-4">
                             <button type="submit" class="btn btn-primary btn-block">
                                 <i class="fas fa-user-plus me-2"></i> Daftar Sekarang
