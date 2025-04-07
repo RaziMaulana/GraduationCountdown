@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Countdown;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class TimeSettingController extends Controller
@@ -15,7 +15,6 @@ class TimeSettingController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        // Get the countdown data to pre-fill the form
         $countdown = Countdown::first();
         return view('admin.TimeSetting', ['countdown' => $countdown]);
     }
@@ -30,8 +29,9 @@ class TimeSettingController extends Controller
             ], 404);
         }
 
+        // Return timestamp dalam milidetik untuk JavaScript
         return response()->json([
-            'targetDate' => $countdown->target_date
+            'targetDate' => $countdown->target_date * 1000 // Convert to milliseconds
         ]);
     }
 
@@ -41,13 +41,30 @@ class TimeSettingController extends Controller
             'targetDate' => 'required|date'
         ]);
 
-        // Get the single countdown record or create a new one if it doesn't exist
-        $countdown = Countdown::firstOrNew();
+        try {
+            $countdown = Countdown::firstOrNew();
 
-        // Update the target date
-        $countdown->target_date = $request->targetDate;
-        $countdown->save();
+            // Konversi datetime string ke UNIX timestamp (dalam detik)
+            $timestamp = strtotime($request->targetDate);
 
-        return response()->json(['success' => true]);
+            if ($timestamp === false) {
+                throw new \Exception('Invalid date format');
+            }
+
+            $countdown->target_date = $timestamp;
+            $countdown->save();
+
+            return response()->json([
+                'success' => true,
+                'timestamp' => $timestamp,
+                'human_readable' => date('Y-m-d H:i:s', $timestamp)
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }

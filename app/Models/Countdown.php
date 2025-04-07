@@ -9,4 +9,5 @@ class Countdown extends Model
     protected $fillable = [
         'target_date',
     ];
+
 }

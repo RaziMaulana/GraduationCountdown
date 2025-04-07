@@ -27,13 +27,13 @@ class OverviewController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     return '<div class="btn-group" role="group" aria-label="Basic example">
-                    <button class="btn btn-sm btn-warning edit-btn" data-id="' . $row->id . '">
+                    <button class="btn btn-sm btn-outline-warning edit-btn" data-id="' . $row->id . '">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn btn-sm btn-info view-btn" data-id="' . $row->id . '">
+                    <button class="btn btn-sm btn-outline-info view-btn" data-id="' . $row->id . '">
                         <i class="fas fa-eye"></i>
                     </button>
-                    <button class="btn btn-sm btn-danger delete-btn" data-id="' . $row->id . '">
+                    <button class="btn btn-sm btn-outline-danger delete-btn" data-id="' . $row->id . '">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>';

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('countdowns', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('target_date');
+            $table->unsignedBigInteger('target_date');
             $table->timestamps();
         });
     }

@@ -2,40 +2,10 @@
 
 @section('title', 'Admin Dashboard')
 
-@section('admin-content')
-    <div class="container-fluid py-4">
-        <div class="row">
-            <div class="col-12">
-                <div class="card bg-dark text-white">
-                    <div class="card-header d-flex justify-content-between align-items-center bg-dark text-white">
-                        <h2><i class="fas fa-users-cog me-2"></i> Student Management</h2>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                            <i class="fas fa-plus me-2"></i>Tambah Siswa
-                        </button>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-bordered data-table table-dark w-100">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Foto</th>
-                                    <th>Nama</th>
-                                    <th>NIS</th>
-                                    <th>Jurusan</th>
-                                    <th>Status</th>
-                                    <th width="15%">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+@section('modals')
 
     <!-- Add User Modal -->
-    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal fade poppins-regular" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-dark text-white">
                 <div class="modal-header bg-dark text-white border-bottom-0">
@@ -78,6 +48,14 @@
                             <label for="foto_diri" class="form-label">Foto Diri</label>
                             <input type="file" class="form-control" id="foto_diri" name="foto_diri">
                         </div>
+                        <div class="form-text text-white">
+                            <small>
+                                <ul class="mb-0 ps-3">
+                                    <li>Foto tidak boleh berukuran lebih dari 2MB</li>
+                                    <li>Pastikan foto yang diupload ialah foto pas foto 3x4</li>
+                                </ul>
+                            </small>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer bg-dark border-top-0">
@@ -89,7 +67,7 @@
     </div>
 
     <!-- Edit User Modal -->
-    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal fade poppins-regular" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-dark text-white">
                 <div class="modal-header bg-dark text-white border-bottom-0">
@@ -132,6 +110,14 @@
                             <label for="editFotoDiri" class="form-label">Foto Diri</label>
                             <input type="file" class="form-control" id="editFotoDiri" name="foto_diri">
                         </div>
+                        <div class="form-text text-white">
+                            <small>
+                                <ul class="mb-0 ps-3">
+                                    <li>Foto tidak boleh berukuran lebih dari 2MB</li>
+                                    <li>Pastikan foto yang diupload ialah foto pas foto 3x4</li>
+                                </ul>
+                            </small>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer bg-dark border-top-0">
@@ -143,7 +129,7 @@
     </div>
 
     <!-- View User Modal -->
-    <div class="modal fade" id="viewUserModal" tabindex="-1" aria-labelledby="viewUserModalLabel" aria-hidden="true">
+    <div class="modal fade poppins-regular" id="viewUserModal" tabindex="-1" aria-labelledby="viewUserModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-dark text-white">
                 <div class="modal-header bg-dark text-white border-bottom-0">
@@ -187,7 +173,7 @@
     </div>
 
     <!-- Delete Confirmation Modal -->
-    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel"
+    <div class="modal fade poppins-regular" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-dark text-white">
@@ -210,11 +196,48 @@
 
 @endsection
 
+@section('admin-content')
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card bg-dark text-white">
+                    <div
+                        class="card-header poppins-regular d-flex justify-content-between align-items-center bg-dark text-white">
+                        <h2><i class="fas fa-users-cog me-2"></i> Student Management</h2>
+                        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
+                            data-bs-target="#addUserModal">
+                            <i class="fas fa-plus me-2"></i>Tambah Siswa
+                        </button>
+                    </div>
+                    <div class="card-body poppins-regular">
+                        <table class="table table-bordered data-table table-dark w-100">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Foto</th>
+                                    <th>Nama</th>
+                                    <th>NIS</th>
+                                    <th>Jurusan</th>
+                                    <th>Status</th>
+                                    <th width="15%">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@endsection
+
 @push('styles')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <style>
+        .card {
+            letter-spacing: 2px;
+        }
+
         .rounded-square {
             width: 50px;
             height: 70px;
@@ -245,18 +268,12 @@
 @endpush
 
 @push('scripts')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
     <script>
         $(document).ready(function() {
             const table = $('.data-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('admin.overview') }}",
+                ajax: "{{ route('admin.manajemen-data') }}",
                 language: {
                     url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json'
                 },
@@ -307,14 +324,22 @@
                 }
             });
 
-            let deleteUserId; // Variabel untuk menyimpan ID user yang akan dihapus
+            let deleteUserId;
 
             // Add User
             $('#saveUser').click(function() {
+
+                const fotoDiri = $('#foto_diri')[0].files[0];
+
+                if (fotoDiri && fotoDiri.size > 2 * 1024 * 1024) { // 2MB in bytes
+                    showToast('Ukuran foto tidak boleh lebih dari 2MB', 'error');
+                    return;
+                }
+
                 const formData = new FormData($('#addUserForm')[0]);
 
                 $.ajax({
-                    url: "{{ route('admin.overview.store') }}",
+                    url: "{{ route('admin.manajemen-data.store') }}",
                     type: 'POST',
                     data: formData,
                     processData: false,
@@ -325,7 +350,7 @@
                     success: (response) => {
                         $('#addUserForm')[0].reset();
                         table.ajax.reload();
-                        showToast('User berhasil ditambahkan', 'success');
+                        showToast('User berhasil ditambahkan 😊', 'success');
                     },
                     error: (xhr) => {
                         handleErrors(xhr);
@@ -338,7 +363,7 @@
                 const userId = $(this).data('id');
 
                 $.ajax({
-                    url: `/admin/overview/${userId}`,
+                    url: `/admin/manajemen-data/${userId}`,
                     type: 'GET',
                     success: (response) => {
                         $('#viewName').text(response.name);
@@ -368,7 +393,7 @@
                 const userId = $(this).data('id');
 
                 $.ajax({
-                    url: `/admin/overview/${userId}/edit`,
+                    url: `/admin/manajemen-data/${userId}/edit`,
                     type: 'GET',
                     success: (response) => {
                         $('#editUserId').val(response.id);
@@ -386,11 +411,19 @@
 
             // Update User
             $('#updateUser').click(function() {
+
+                const fotoDiri = $('#editFotoDiri')[0].files[0];
+
+                if (fotoDiri && fotoDiri.size > 2 * 1024 * 1024) { // 2MB in bytes
+                    showToast('Ukuran foto tidak boleh lebih dari 2MB', 'error');
+                    return;
+                }
+
                 const userId = $('#editUserId').val();
                 const formData = new FormData($('#editUserForm')[0]);
 
                 $.ajax({
-                    url: `/admin/overview/${userId}`,
+                    url: `/admin/manajemen-data/${userId}`,
                     type: 'POST',
                     data: formData,
                     processData: false,
@@ -402,7 +435,7 @@
                     success: (response) => {
                         $('#editUserModal').modal('hide');
                         table.ajax.reload();
-                        showToast('User berhasil diperbarui', 'success');
+                        showToast('Data Berhasil Diedit 😎', 'success');
                     },
                     error: (xhr) => {
                         handleErrors(xhr);
@@ -419,7 +452,7 @@
             // Confirm Delete User
             $('#confirmDelete').click(function() {
                 $.ajax({
-                    url: `/admin/overview/${deleteUserId}`,
+                    url: `/admin/manajemen-data/${deleteUserId}`,
                     type: 'DELETE',
                     data: {
                         _token: '{{ csrf_token() }}'
@@ -427,7 +460,7 @@
                     success: (response) => {
                         $('#deleteConfirmationModal').modal('hide');
                         table.ajax.reload();
-                        showToast('User berhasil dihapus', 'success');
+                        showToast('Data Berhasil Dihapus 🥲', 'success');
                     },
                     error: (xhr) => {
                         handleErrors(xhr);
@@ -445,7 +478,8 @@
                     position: "right",
                     style: {
                         background: type === 'success' ? "#28a745" : "#dc3545",
-                    }
+                        borderRadius: "6px",
+                    },
                 }).showToast();
             }
 

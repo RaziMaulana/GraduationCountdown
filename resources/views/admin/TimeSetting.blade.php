@@ -7,7 +7,6 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8">
-                    <!-- Combined Countdown and Form Container -->
                     <div class="rounded-4 p-5 shadow-lg Main-container border">
                         <!-- Countdown Display Section -->
                         <div class="text-center mb-4">
@@ -41,7 +40,6 @@
                             <div id="countdownMessage" class="mt-3"></div>
                         </div>
 
-                        <!-- Enhanced Form Section -->
                         <div class="pt-4 text-white">
                             <form id="countdownForm" class="needs-validation" novalidate>
                                 <div class="mb-4">
@@ -52,7 +50,8 @@
                                         <span class="input-group-text bg-light">
                                             <i class="fas fa-clock text-primary"></i>
                                         </span>
-                                        <input type="datetime-local" class="form-control form-control-lg" id="targetDate" required>
+                                        <input type="datetime-local" class="form-control form-control-lg" id="targetDate"
+                                            required>
                                     </div>
                                     <div class="form-text text-white">
                                         Pilih tanggal dan waktu target pengumuman kelulusan
@@ -74,14 +73,13 @@
         </div>
     </div>
 
-    <!-- Toast Notification -->
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-        <div id="notificationToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header bg-dark text-white">
-                <strong class="me-auto">Notifikasi</strong>
+    <!-- Toast Notification - Updated with rounded corners -->
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+        <div id="notificationToast" class="toast rounded-pill overflow-hidden" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body d-flex justify-content-between align-items-center bg-success text-white py-3 px-4">
+                <span class="fw-medium">Waktu Berhasil Diset ⌚</span>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <div class="toast-body bg-light" id="toastMessage"></div>
         </div>
     </div>
 
@@ -114,24 +112,20 @@
 
             async loadCurrentSettings() {
                 try {
-                    const response = await fetch('/admin/time-setting/countdown');
+                    const response = await fetch('/admin/atur-waktu/countdown');
 
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
 
-                    const contentType = response.headers.get('content-type');
-                    if (!contentType || !contentType.includes('application/json')) {
-                        throw new Error("Response is not JSON");
-                    }
-
                     const data = await response.json();
 
                     if (data.targetDate) {
-                        const localDateTime = new Date(data.targetDate);
-                        const offset = localDateTime.getTimezoneOffset() * 60000;
-                        const localISOTime = new Date(localDateTime - offset).toISOString().slice(0, 16);
-                        this.targetDateInput.value = localISOTime;
+                        const date = new Date(data.targetDate);
+                        const localDateTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
+                            .toISOString()
+                            .slice(0, 16);
+                        this.targetDateInput.value = localDateTime;
                         this.startCountdown();
                     } else {
                         this.updateCountdownDisplay(null);
@@ -155,25 +149,28 @@
                     try {
                         submitButton.disabled = true;
                         submitButton.innerHTML = `
-                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            Menyimpan...
-                        `;
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Menyimpan...
+                    `;
 
-                        const response = await fetch('/admin/time-setting/countdown', {
+                        const timestamp = Math.floor(new Date(this.targetDateInput.value).getTime() / 1000);
+
+                        const response = await fetch('/admin/atur-waktu/countdown', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
                             },
                             body: JSON.stringify({
-                                targetDate: this.targetDateInput.value
+                                targetDate: new Date(this.targetDateInput.value)
+                                    .toISOString()
                             })
                         });
 
                         const result = await response.json();
 
                         if (result.success) {
-                            this.showToast('Countdown berhasil diperbarui!', 'success');
+                            this.showToast('Waktu berhasil Diset', 'success');
                             this.startCountdown();
                         } else {
                             throw new Error(result.message || 'Gagal menyimpan pengaturan');
@@ -240,7 +237,8 @@
 
                 if (!time) {
                     countdownDisplay.style.display = 'none';
-                    countdownMessage.innerHTML = '<span class="badge bg-danger">Belum ada waktu pengumuman yang diatur</span>';
+                    countdownMessage.innerHTML =
+                        '<span class="badge bg-danger">Belum ada waktu pengumuman yang diatur</span>';
                     return;
                 }
 
@@ -253,7 +251,6 @@
                 countdownDisplay.style.display = 'block';
                 countdownMessage.innerHTML = '';
 
-                // Safely update countdown numbers
                 const updateElement = (id, value) => {
                     const el = document.getElementById(id);
                     if (el) el.textContent = String(value).padStart(2, '0');
@@ -266,11 +263,27 @@
             }
 
             showToast(message, type) {
-                const toastBody = document.getElementById('toastMessage');
-                if (!toastBody) return;
+                const toastElement = document.getElementById('notificationToast');
+                if (!toastElement) return;
 
-                toastBody.textContent = message;
-                toastBody.className = `toast-body bg-light ${type === 'error' ? 'text-danger' : 'text-success'}`;
+                if (type === 'success') {
+                    const toastBody = toastElement.querySelector('.toast-body');
+                    toastBody.innerHTML = `
+                        <span class="fw-medium">${message} ⌚</span>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                    `;
+                    toastBody.className = 'd-flex justify-content-between align-items-center bg-success text-white py-3 px-4 toast-body';
+                } else {
+                    const toastBody = toastElement.querySelector('.toast-body');
+                    toastBody.innerHTML = `
+                        <span class="fw-medium">${message}</span>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                    `;
+                    toastBody.className = 'd-flex justify-content-between align-items-center bg-danger text-white py-3 px-4 toast-body';
+                }
+
+                toastElement.className = 'toast rounded-3 overflow-hidden';
+
                 this.toast.show();
             }
         }

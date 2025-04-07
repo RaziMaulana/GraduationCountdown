@@ -1,9 +1,9 @@
 @extends('Graduation.layouts.app')
 
 @section('content')
-    <!-- Logout Button in Top Left Corner -->
+
     <div class="position-absolute top-0 start-0 m-3">
-        <form method="POST" action="{{ route('logout') }}">
+        <form id="logout-form" action="{{ route('logout') }}" method="POST">
             @csrf
             <button type="submit" class="btn btn-danger" title="Logout">
                 <i class="bi bi-box-arrow-left fs-4"></i>
@@ -11,14 +11,14 @@
         </form>
     </div>
 
-    <!-- Centered Countdown Content -->
     <div class="container d-flex flex-column min-vh-100 justify-content-center">
-        <!-- Countdown Timer - Made slightly wider with col-md-10 -->
-        <div id="countdown-container" class="text-center my-5 p-5 countdown-container border rounded col-md-10 col-lg-8 mx-auto">
-            <img src="image/LambangSmk6.png" class="img-fluid mb-3" style="max-width: 120px; height: auto;">
-            <h2 class="mb-4 text-white">PENGUMUMAN KELULUSAN <br> 2024/2025</h2>
 
-            <div class="countdown-display d-flex justify-content-center gap-3">
+        <div id="countdown-container"
+            class="text-center my-5 p-5 countdown-container border rounded-5 col-md-10 col-lg-8 mx-auto">
+            <img src="image/LambangSmk6.png" class="img-fluid mb-3" style="max-width: 120px; height: auto;">
+            <h2 class="mb-4 text-white poppins-regular">PENGUMUMAN KELULUSAN <br> 2024/2025</h2>
+
+            <div class="countdown-display d-flex justify-content-center gap-3 poppins-regular">
                 <div class="countdown-item">
                     <div class="display-4 countdown-number" id="days">00</div>
                     <div class="countdown-label">Hari</div>
@@ -40,8 +40,12 @@
         </div>
     </div>
 
-    <!-- Rest of your JavaScript code remains the same -->
     <script>
+
+        document.getElementById('logout-form').addEventListener('submit', function() {
+            this.classList.add('processing');
+        });
+
         class Countdown {
             constructor() {
                 this.elements = {
@@ -59,19 +63,38 @@
             }
 
             async init() {
+
+                const savedTimestamp = localStorage.getItem('countdownTarget');
+                if (savedTimestamp) {
+                    this.targetTimestamp = parseInt(savedTimestamp);
+                    this.updateUI();
+                    this.startCountdown();
+                }
+
                 await this.fetchTargetDate();
-                this.startCountdown();
-                setInterval(() => this.fetchTargetDate(), 30000);
+
+                setInterval(() => {
+
+                    if (!document.getElementById('logout-form').classList.contains('processing')) {
+                        this.fetchTargetDate();
+                    }
+                }, 30000);
             }
 
             async fetchTargetDate() {
                 try {
                     const timestamp = new Date().getTime();
-                    const response = await fetch(`/Graduation/countdown?t=${timestamp}`);
+                    const response = await fetch(`/kelulusan/countdown?t=${timestamp}`);
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
                     const data = await response.json();
 
                     if (data.targetDate) {
-                        this.targetTimestamp = new Date(data.targetDate).getTime();
+                        this.targetTimestamp = data.targetDate;
+                        localStorage.setItem('countdownTarget', this.targetTimestamp);
                         this.updateUI();
                         if (!this.animationId) {
                             this.startCountdown();
@@ -81,10 +104,17 @@
                         this.resetCountdown();
                         this.stopCountdown();
                         this.targetTimestamp = 0;
+                        localStorage.removeItem('countdownTarget');
                     }
                 } catch (error) {
                     console.error('Error fetching countdown:', error);
                     this.showMessage('Gagal memuat data countdown', 'danger');
+                    const savedTimestamp = localStorage.getItem('countdownTarget');
+                    if (savedTimestamp && !this.animationId) {
+                        this.targetTimestamp = parseInt(savedTimestamp);
+                        this.updateUI();
+                        this.startCountdown();
+                    }
                 }
             }
 
@@ -111,8 +141,16 @@
                 const distance = this.targetTimestamp - now;
 
                 if (distance <= 0) {
-                    this.showMessage('Pengumuman Telah Dimulai!', 'success');
+                    this.showMessage('Pengumuman Telah Dimulai! Mengalihkan ke halaman hasil...', 'success');
                     this.stopCountdown();
+
+                    localStorage.removeItem('countdownTarget');
+
+                        setTimeout(() => {
+                            const userStatus = "{{ Auth::user()->status ?? 'Tidak Lulus' }}";
+                            window.location.href = "{{ route('kelulusan.hasil') }}/" + encodeURIComponent(userStatus);
+                        }, 1000);
+
                     return;
                 }
 
@@ -157,10 +195,8 @@
             }
 
             resetCountdown() {
-                Object.keys(this.elements).forEach(key => {
-                    if (['days', 'hours', 'minutes', 'seconds'].includes(key)) {
-                        this.elements[key].textContent = '00';
-                    }
+                ['days', 'hours', 'minutes', 'seconds'].forEach(unit => {
+                    this.elements[unit].textContent = '00';
                 });
                 this.elements.container.querySelector('.countdown-display').style.display = 'none';
             }
@@ -179,7 +215,7 @@
     </script>
 
     <style>
-        .countdown-container{
+        .countdown-container {
             backdrop-filter: blur(10px);
             background-color: rgba(55, 55, 55, 0.1);
         }
@@ -187,8 +223,8 @@
         .countdown-item {
             background: rgba(248, 249, 250, 0.9);
             border-radius: 12px;
-            padding: 1.5rem 1.5rem; /* Increased padding */
-            min-width: 140px; /* Increased min-width */
+            padding: 1.5rem 1.5rem;
+            min-width: 140px;
             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
         }
@@ -202,7 +238,7 @@
             font-weight: 700;
             color: #2c3e50;
             transition: all 0.5s ease;
-            font-size: 2.8rem; /* Slightly larger font */
+            font-size: 2.8rem;
         }
 
         .countdown-number.changing {
@@ -211,7 +247,7 @@
         }
 
         .countdown-label {
-            font-size: 1rem; /* Restored original size */
+            font-size: 1rem;
             color: #6c757d;
             margin-top: 0.5rem;
         }

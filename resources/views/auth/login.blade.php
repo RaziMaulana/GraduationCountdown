@@ -4,7 +4,7 @@
 <div class="container min-vh-100 d-flex justify-content-center align-items-center">
     <div class="row justify-content-center w-100">
         <div class="col-md-10 col-lg-8 col-xl-8 p-5 rounded-4" style="background-color: rgba(55, 55, 55, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);">
-            <!-- Header dengan gambar dan teks -->
+
             <div class="text-center mb-4">
                 <img src="image/LambangSmk6.png" class="img-fluid mb-3" style="max-width: 120px; height: auto;">
                 <h2 class="text-white Form-Header poppins-regular mb-4">PENGUMUMAN KELULUSAN <br> 2024/2025</h2>
@@ -23,7 +23,6 @@
             <form method="POST" action="{{ route('login') }}" class="px-4">
                 @csrf
 
-                <!-- NIS Input - Now Narrower -->
                 <div class="mb-5 mx-auto mt-5" style="max-width: 230px;"> <!-- Changed from 400px to 250px -->
                     <input type="text"
                            class="form-control poppins-regular text-white text-center @error('nis') is-invalid @enderror"
@@ -40,7 +39,6 @@
                     @enderror
                 </div>
 
-                <!-- Submit Button -->
                 <div class="d-grid gap-3 mx-auto" style="max-width: 320px;"> <!-- Reduced from 300px to 200px -->
                     <button type="submit" class="btn btn-primary rounded-pill py-3 px-5 poppins-regular">
                         Lanjutkan

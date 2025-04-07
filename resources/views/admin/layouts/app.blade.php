@@ -15,16 +15,127 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
     <style>
         body {
             background-color: rgb(49, 54, 63);
+            letter-spacing: 2px;
+        }
+
+        .poppins-thin {
+            font-family: "Poppins", sans-serif;
+            font-weight: 100;
+            font-style: normal;
+        }
+
+        .poppins-extralight {
+            font-family: "Poppins", sans-serif;
+            font-weight: 200;
+            font-style: normal;
+        }
+
+        .poppins-light {
+            font-family: "Poppins", sans-serif;
+            font-weight: 300;
+            font-style: normal;
+        }
+
+        .poppins-regular {
+            font-family: "Poppins", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .poppins-medium {
+            font-family: "Poppins", sans-serif;
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        .poppins-semibold {
+            font-family: "Poppins", sans-serif;
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        .poppins-bold {
+            font-family: "Poppins", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        .poppins-extrabold {
+            font-family: "Poppins", sans-serif;
+            font-weight: 800;
+            font-style: normal;
+        }
+
+        .poppins-black {
+            font-family: "Poppins", sans-serif;
+            font-weight: 900;
+            font-style: normal;
+        }
+
+        .poppins-thin-italic {
+            font-family: "Poppins", sans-serif;
+            font-weight: 100;
+            font-style: italic;
+        }
+
+        .poppins-extralight-italic {
+            font-family: "Poppins", sans-serif;
+            font-weight: 200;
+            font-style: italic;
+        }
+
+        .poppins-light-italic {
+            font-family: "Poppins", sans-serif;
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        .poppins-regular-italic {
+            font-family: "Poppins", sans-serif;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .poppins-medium-italic {
+            font-family: "Poppins", sans-serif;
+            font-weight: 500;
+            font-style: italic;
+        }
+
+        .poppins-semibold-italic {
+            font-family: "Poppins", sans-serif;
+            font-weight: 600;
+            font-style: italic;
+        }
+
+        .poppins-bold-italic {
+            font-family: "Poppins", sans-serif;
+            font-weight: 700;
+            font-style: italic;
+        }
+
+        .poppins-extrabold-italic {
+            font-family: "Poppins", sans-serif;
+            font-weight: 800;
+            font-style: italic;
+        }
+
+        .poppins-black-italic {
+            font-family: "Poppins", sans-serif;
+            font-weight: 900;
+            font-style: italic;
         }
 
         .sidebar {
             background-color: rgb(24, 28, 20);
             min-height: 100vh;
-            /* Ensure sidebar takes full height */
         }
 
         .sidebar-header-image {
@@ -52,47 +163,54 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        .sidebar-header-title{
+            letter-spacing: 2px;
+        }
+
+        .sidebar-item {
+            letter-spacing: 2px;
+        }
+
         .main-content {
             background-color: rgb(49, 54, 63);
-            /* Match body background */
             padding: 20px;
-            /* Add padding for better spacing */
         }
     </style>
-    @stack('styles') <!-- Optional: for page-specific styles -->
+    @stack('styles')
 </head>
 
-<body class="font-sans text-gray-900 antialiased">
+<body class="font-sans text-gray-900 antialiased poppins-regular">
+
+    @yield('modals')
+
     <div class="container-fluid">
         <div class="row">
-            <!-- Sidebar -->
             <div class="col-md-3 col-lg-2 sidebar">
                 <div class="sidebar-header text-white p-4">
                     <div class="d-flex align-items-center justify-content-center">
                         <img src="{{ asset('image/LambangSmk6.png') }}" class="sidebar-header-image me-3">
-                        <h4 class="m-0">SMKN 6</h4>
+                        <h4 class="m-0 poppins-medium sidebar-header-title">SMKN 6</h4>
                     </div>
                 </div>
-                <div class="position-sticky pt-2 d-flex flex-column justify-content-center"
+                <div class="position-sticky sidebar-item poppins-regular pt-2 d-flex flex-column justify-content-center"
                     style="height: calc(100vh - 80px);">
                     <ul class="nav flex-column text-center">
                         <li class="nav-item mx-auto mb-3">
-                            <a class="nav-link {{ request()->routeIs('admin.overview') ? 'active' : '' }} text-white py-2 px-4 rounded-pill"
-                                href="{{ route('admin.overview') }}">
-                                <i class="fas fa-chart-pie me-2"></i> OVERVIEW
+                            <a class="poppins-regular nav-link {{ request()->routeIs('admin.manajemen-data') ? 'active' : '' }} text-white py-2 px-4 rounded-pill"
+                                href="{{ route('admin.manajemen-data') }}">
+                                <i class="fas fa-chart-pie me-2"></i> MANAJEMEN
                             </a>
                         </li>
                         <li class="nav-item mx-auto mt-3">
-                            <a class="nav-link {{ request()->routeIs('admin.time-setting') ? 'active' : '' }} text-white py-2 px-4 rounded-pill"
-                                href="{{ route('admin.time-setting') }}">
-                                <i class="fas fa-clock me-2"></i> SET TIME
+                            <a class="nav-link {{ request()->routeIs('admin.atur-waktu') ? 'active' : '' }} text-white py-2 px-4 rounded-pill"
+                                href="{{ route('admin.atur-waktu') }}">
+                                <i class="fas fa-clock me-2"></i> SET WAKTU
                             </a>
                         </li>
                     </ul>
                 </div>
             </div>
 
-            <!-- Main Content -->
             <div class="col-md-9 col-lg-10 main-content">
                 @yield('admin-content')
             </div>
@@ -104,7 +222,12 @@
     </script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
-    @stack('scripts') <!-- Optional: for page-specific scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    @stack('scripts')
 </body>
 
 </html>

@@ -8,16 +8,24 @@ use App\Models\Countdown;
 
 class GraduationTimeController extends Controller
 {
-    public function GraduationTimeIndex(){
+    public function GraduationTimeIndex()
+    {
         return view('Graduation.index');
     }
 
     public function getCountdown()
     {
         $countdown = Countdown::first();
+
+        if (!$countdown) {
+            return response()->json([
+                'error' => 'Countdown data not found'
+            ], 404);
+        }
+
+        // Return timestamp dalam milidetik untuk JavaScript
         return response()->json([
-            'targetDate' => $countdown ? $countdown->target_date : null
+            'targetDate' => $countdown->target_date * 1000 // Convert to milliseconds
         ]);
     }
-
 }

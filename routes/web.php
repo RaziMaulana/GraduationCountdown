@@ -4,34 +4,31 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\admin\OverviewController;
 use App\Http\Controllers\admin\TimeSettingController;
+use App\Http\Controllers\Graduation\ResultController;
 use App\Http\Controllers\Graduation\GraduationTimeController;
 
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 
-Route::prefix('Graduation')->group(function () {
-    Route::get('/', [GraduationTimeController::class, 'GraduationTimeIndex'])->middleware(['auth', 'verified'])->name('graduation.index');
-    Route::get('/countdown', [GraduationTimeController::class, 'getCountdown'])->middleware(['auth', 'verified'])->name('graduation.countdown');
+Route::prefix('kelulusan')->group(function () {
+    Route::get('/', [GraduationTimeController::class, 'GraduationTimeIndex'])->middleware(['auth', 'verified'])->name('kelulusan.index');
+    Route::get('/countdown', [GraduationTimeController::class, 'getCountdown'])->middleware(['auth', 'verified'])->name('kelulusan.countdown');
+
+    Route::get('/hasil/{status?}', [ResultController::class, 'ResultIndex'])->middleware(['auth', 'verified'])->name('kelulusan.hasil');
 });
 
 Route::prefix('admin')->group(function () {
-    Route::get('/overview', [OverviewController::class, 'OverviewIndex'])->middleware(['auth', 'verified'])->name('admin.overview');
-    Route::post('/overview/store', [OverviewController::class, 'OverviewStore'])->middleware(['auth', 'verified'])->name('admin.overview.store');
-    Route::get('/overview/{id}', [OverviewController::class, 'OverviewShow'])->name('admin.overview.show');
-    Route::get('/overview/{id}/edit', [OverviewController::class, 'OverviewEdit'])->name('admin.overview.edit');
-    Route::put('/overview/{id}', [OverviewController::class, 'OverviewUpdate'])->name('admin.overview.update');
-    Route::delete('/overview/{id}', [OverviewController::class, 'OverviewDestroy'])->name('admin.overview.destroy');
+    Route::get('/manajemen-data', [OverviewController::class, 'OverviewIndex'])->middleware(['auth', 'verified'])->name('admin.manajemen-data');
+    Route::post('/manajemen-data/store', [OverviewController::class, 'OverviewStore'])->middleware(['auth', 'verified'])->name('admin.manajemen-data.store');
+    Route::get('/manajemen-data/{id}', [OverviewController::class, 'OverviewShow'])->name('admin.manajemen-data.show');
+    Route::get('/manajemen-data/{id}/edit', [OverviewController::class, 'OverviewEdit'])->name('admin.manajemen-data.edit');
+    Route::put('/manajemen-data/{id}', [OverviewController::class, 'OverviewUpdate'])->name('admin.manajemen-data.update');
+    Route::delete('/manajemen-data/{id}', [OverviewController::class, 'OverviewDestroy'])->name('admin.manajemen-data.destroy');
 
-    Route::get('/time-setting', [TimeSettingController::class, 'TimeSettingIndex'])->middleware(['auth', 'verified'])->name('admin.time-setting');
-    Route::get('/time-setting/countdown', [TimeSettingController::class, 'getCountdown'])->middleware(['auth', 'verified'])->name('admin.time-setting.countdown');
-    Route::post('/time-setting/countdown', [TimeSettingController::class, 'setCountdown'])->middleware(['auth', 'verified'])->name('admin.time-setting.countdown');
-});
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/atur-waktu', [TimeSettingController::class, 'TimeSettingIndex'])->middleware(['auth', 'verified'])->name('admin.atur-waktu');
+    Route::get('/atur-waktu/countdown', [TimeSettingController::class, 'getCountdown'])->middleware(['auth', 'verified'])->name('admin.atur-waktu.countdown');
+    Route::post('/atur-waktu/countdown', [TimeSettingController::class, 'setCountdown'])->middleware(['auth', 'verified'])->name('admin.atur-waktu.countdown');
 });
 
 require __DIR__ . '/auth.php';
