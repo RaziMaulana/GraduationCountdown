@@ -31,12 +31,12 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'nis' => ['required', 'string', 'lowercase', 'max:255', 'unique:'.User::class],
+            'nisn' => ['required', 'string', 'lowercase', 'max:255', 'unique:'.User::class],
         ]);
 
         $user = User::create([
             'name' => $request->name,
-            'nis' => $request->nis,
+            'nisn' => $request->nis,
         ]);
 
         event(new Registered($user));

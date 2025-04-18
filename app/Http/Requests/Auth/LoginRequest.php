@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use App\Models\User; // Pastikan untuk mengimpor model User
 
 class LoginRequest extends FormRequest
 {
@@ -19,7 +20,8 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nis' => ['required', 'string'], // Only NIS is required now
+            'nisn' => ['required', 'string'],
+            'password' => ['required', 'string'],
         ];
     }
 
@@ -27,18 +29,27 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        // Find user by NIS only
-        $user = \App\Models\User::where('nis', $this->nis)->first();
+        // Cek apakah NISN ada di database
+        $user = User::where('nisn', $this->nisn)->first();
 
         if (!$user) {
             RateLimiter::hit($this->throttleKey());
             throw ValidationException::withMessages([
-                'nis' => trans('auth.failed'),
+                'nisn' => 'NISN tidak terdaftar', // Pesan khusus untuk NISN tidak terdaftar
             ]);
         }
 
-        // Log in the user without password verification
-        Auth::login($user, $this->boolean('remember'));
+        // Jika NISN ada, coba autentikasi
+        if (!Auth::attempt([
+            'nisn' => $this->nisn,
+            'password' => $this->password
+        ], $this->boolean('remember'))) {
+            RateLimiter::hit($this->throttleKey());
+            throw ValidationException::withMessages([
+                'password' => 'Password yang Anda masukkan salah.', // Pesan error hanya untuk password salah
+            ]);
+        }
+
         RateLimiter::clear($this->throttleKey());
     }
 
@@ -53,7 +64,7 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'nis' => trans('auth.throttle', [
+            'nisn' => trans('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -62,6 +73,6 @@ class LoginRequest extends FormRequest
 
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->nis).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->nisn).'|'.$this->ip());
     }
 }

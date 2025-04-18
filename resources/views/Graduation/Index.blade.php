@@ -1,8 +1,7 @@
 @extends('Graduation.layouts.app')
 
 @section('content')
-
-    <div class="position-absolute top-0 start-0 m-3">
+    <div class="position-absolute z-3 top-0 start-0 m-3">
         <form id="logout-form" action="{{ route('logout') }}" method="POST">
             @csrf
             <button type="submit" class="btn btn-danger" title="Logout">
@@ -11,37 +10,82 @@
         </form>
     </div>
 
-    <div class="container d-flex flex-column min-vh-100 justify-content-center">
-
-        <div id="countdown-container"
-            class="text-center my-5 p-5 countdown-container border rounded-5 col-md-10 col-lg-8 mx-auto">
+    <div class="d-flex flex-column mt-4 justify-content-center align-items-center" style="min-height: calc(100vh - 180px);">
+        <div id="countdown-container" class="text-center my-3 p-3 p-md-5 border rounded-5 mx-auto"
+             style="max-width: 800px; width: 100%; backdrop-filter: blur(10px); background-color: rgba(55, 55, 55, 0.1);">
             <img src="image/LambangSmk6.png" class="img-fluid mb-3" style="max-width: 120px; height: auto;">
             <h2 class="mb-4 text-white poppins-regular">PENGUMUMAN KELULUSAN <br> 2024/2025</h2>
 
-            <div class="countdown-display d-flex justify-content-center gap-3 poppins-regular">
-                <div class="countdown-item">
-                    <div class="display-4 countdown-number" id="days">00</div>
-                    <div class="countdown-label">Hari</div>
+            <div class="countdown-display d-flex flex-wrap justify-content-center gap-2 gap-md-3 poppins-regular mb-4">
+                <div class="countdown-item bg-light rounded-3 p-5 text-center" style="min-width: 80px; max-width: 140px;">
+                    <div class="display-4 countdown-number fw-bold text-dark" id="days">00</div>
+                    <div class="countdown-label text-muted">Hari</div>
                 </div>
-                <div class="countdown-item">
-                    <div class="display-4 countdown-number" id="hours">00</div>
-                    <div class="countdown-label">Jam</div>
+                <div class="countdown-item bg-light rounded-3 p-5 text-center" style="min-width: 80px; max-width: 140px;">
+                    <div class="display-4 countdown-number fw-bold text-dark" id="hours">00</div>
+                    <div class="countdown-label text-muted">Jam</div>
                 </div>
-                <div class="countdown-item">
-                    <div class="display-4 countdown-number" id="minutes">00</div>
-                    <div class="countdown-label">Menit</div>
+                <div class="countdown-item bg-light rounded-3 p-5 text-center" style="min-width: 80px; max-width: 140px;">
+                    <div class="display-4 countdown-number fw-bold text-dark" id="minutes">00</div>
+                    <div class="countdown-label text-muted">Menit</div>
                 </div>
-                <div class="countdown-item">
-                    <div class="display-4 countdown-number" id="seconds">00</div>
-                    <div class="countdown-label">Detik</div>
+                <div class="countdown-item bg-light rounded-3 p-5 text-center" style="min-width: 80px; max-width: 140px;">
+                    <div class="display-4 countdown-number fw-bold text-dark" id="seconds">00</div>
+                    <div class="countdown-label text-muted">Detik</div>
                 </div>
+            </div>
+            <div id="countdown-end-time" class="mt-3 countdown-end-time text-white poppins-regular">
+                Countdown berakhir: <br>
+                <span id="countdown-end-date"></span>
             </div>
             <div id="countdown-message" class="mt-3"></div>
         </div>
     </div>
 
-    <script>
+    <style>
+        .countdown-item {
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.08);
+        }
 
+        .countdown-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .countdown-number {
+            transition: all 0.5s ease;
+            font-size: 2rem;
+        }
+
+        .countdown-number.changing {
+            transform: scale(1.1);
+            color: #0d6efd !important;
+        }
+
+        .countdown-label {
+            font-size: 0.8rem;
+        }
+
+        .countdown-end-time{
+            letter-spacing: 1px;
+        }
+
+        @media (min-width: 768px) {
+            .countdown-number {
+                font-size: 2.8rem;
+            }
+            .countdown-label {
+                font-size: 1rem;
+            }
+            .countdown-item {
+                min-width: 140px;
+                padding: 1.5rem !important;
+            }
+        }
+    </style>
+
+    <script>
         document.getElementById('logout-form').addEventListener('submit', function() {
             this.classList.add('processing');
         });
@@ -54,7 +98,9 @@
                     hours: document.getElementById('hours'),
                     minutes: document.getElementById('minutes'),
                     seconds: document.getElementById('seconds'),
-                    message: document.getElementById('countdown-message')
+                    message: document.getElementById('countdown-message'),
+                    endTime: document.getElementById('countdown-end-time'),
+                    endDate: document.getElementById('countdown-end-date')
                 };
                 this.targetTimestamp = 0;
                 this.animationId = null;
@@ -63,7 +109,6 @@
             }
 
             async init() {
-
                 const savedTimestamp = localStorage.getItem('countdownTarget');
                 if (savedTimestamp) {
                     this.targetTimestamp = parseInt(savedTimestamp);
@@ -74,7 +119,6 @@
                 await this.fetchTargetDate();
 
                 setInterval(() => {
-
                     if (!document.getElementById('logout-form').classList.contains('processing')) {
                         this.fetchTargetDate();
                     }
@@ -146,16 +190,17 @@
 
                     localStorage.removeItem('countdownTarget');
 
-                        setTimeout(() => {
-                            const userStatus = "{{ Auth::user()->status ?? 'Tidak Lulus' }}";
-                            window.location.href = "{{ route('kelulusan.hasil') }}/" + encodeURIComponent(userStatus);
-                        }, 1000);
+                    setTimeout(() => {
+                        const userStatus = "{{ Auth::user()->status ?? 'Tidak Lulus' }}";
+                        window.location.href = "{{ route('kelulusan.hasil') }}/" + encodeURIComponent(userStatus);
+                    }, 1000);
 
                     return;
                 }
 
                 this.calculateTimeUnits(distance);
                 this.animateNumbers();
+                this.updateEndTime();
             }
 
             calculateTimeUnits(distance) {
@@ -184,6 +229,26 @@
                 this.elements.message.textContent = '';
                 this.elements.container.style.display = 'block';
                 this.elements.container.querySelector('.countdown-display').style.display = 'flex';
+                this.updateEndTime();
+            }
+
+            updateEndTime() {
+                if (this.targetTimestamp) {
+                    const endDate = new Date(this.targetTimestamp);
+                    const options = {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        timeZone: 'Asia/Makassar', // WITA timezone
+                        hour12: false // Format 24 jam
+                    };
+                    const formattedDate = endDate.toLocaleDateString('id-ID', options);
+                    this.elements.endDate.textContent = `${formattedDate} WITA`;
+                } else {
+                    this.elements.endDate.textContent = '';
+                }
             }
 
             showMessage(text, type) {
@@ -199,6 +264,7 @@
                     this.elements[unit].textContent = '00';
                 });
                 this.elements.container.querySelector('.countdown-display').style.display = 'none';
+                this.elements.endDate.textContent = '';
             }
 
             stopCountdown() {
@@ -213,50 +279,4 @@
             new Countdown();
         });
     </script>
-
-    <style>
-        .countdown-container {
-            backdrop-filter: blur(10px);
-            background-color: rgba(55, 55, 55, 0.1);
-        }
-
-        .countdown-item {
-            background: rgba(248, 249, 250, 0.9);
-            border-radius: 12px;
-            padding: 1.5rem 1.5rem;
-            min-width: 140px;
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-        }
-
-        .countdown-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .countdown-number {
-            font-weight: 700;
-            color: #2c3e50;
-            transition: all 0.5s ease;
-            font-size: 2.8rem;
-        }
-
-        .countdown-number.changing {
-            transform: scale(1.1);
-            color: #0d6efd;
-        }
-
-        .countdown-label {
-            font-size: 1rem;
-            color: #6c757d;
-            margin-top: 0.5rem;
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            position: relative;
-        }
-    </style>
 @endsection

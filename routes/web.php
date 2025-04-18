@@ -14,17 +14,19 @@ use App\Http\Controllers\Graduation\GraduationTimeController;
 Route::prefix('kelulusan')->group(function () {
     Route::get('/', [GraduationTimeController::class, 'GraduationTimeIndex'])->middleware(['auth', 'verified'])->name('kelulusan.index');
     Route::get('/countdown', [GraduationTimeController::class, 'getCountdown'])->middleware(['auth', 'verified'])->name('kelulusan.countdown');
-
     Route::get('/hasil/{status?}', [ResultController::class, 'ResultIndex'])->middleware(['auth', 'verified'])->name('kelulusan.hasil');
 });
 
 Route::prefix('admin')->group(function () {
     Route::get('/manajemen-data', [OverviewController::class, 'OverviewIndex'])->middleware(['auth', 'verified'])->name('admin.manajemen-data');
+    Route::get('/admin/manajemen-data/count', [OverviewController::class, 'getStudentCount'])->middleware(['auth', 'verified'])->name('admin.manajemen-data.count');
     Route::post('/manajemen-data/store', [OverviewController::class, 'OverviewStore'])->middleware(['auth', 'verified'])->name('admin.manajemen-data.store');
-    Route::get('/manajemen-data/{id}', [OverviewController::class, 'OverviewShow'])->name('admin.manajemen-data.show');
-    Route::get('/manajemen-data/{id}/edit', [OverviewController::class, 'OverviewEdit'])->name('admin.manajemen-data.edit');
-    Route::put('/manajemen-data/{id}', [OverviewController::class, 'OverviewUpdate'])->name('admin.manajemen-data.update');
-    Route::delete('/manajemen-data/{id}', [OverviewController::class, 'OverviewDestroy'])->name('admin.manajemen-data.destroy');
+    Route::post('/admin/manajemen-data/import', [OverviewController::class, 'import'])->middleware(['auth', 'verified'])->name('admin.manajemen-data.import');
+    Route::delete('/manajemen-data/destroy-all', [OverviewController::class, 'destroyAll'])->middleware(['auth', 'verified'])->name('admin.manajemen-data.destroy-all');
+    Route::get('/manajemen-data/{id}', [OverviewController::class, 'OverviewShow'])->middleware(['auth', 'verified'])->name('admin.manajemen-data.show');
+    Route::get('/manajemen-data/{id}/edit', [OverviewController::class, 'OverviewEdit'])->middleware(['auth', 'verified'])->name('admin.manajemen-data.edit');
+    Route::put('/manajemen-data/{id}', [OverviewController::class, 'OverviewUpdate'])->middleware(['auth', 'verified'])->name('admin.manajemen-data.update');
+    Route::delete('/manajemen-data/{id}', [OverviewController::class, 'OverviewDestroy'])->middleware(['auth', 'verified'])->name('admin.manajemen-data.destroy');
 
     Route::get('/atur-waktu', [TimeSettingController::class, 'TimeSettingIndex'])->middleware(['auth', 'verified'])->name('admin.atur-waktu');
     Route::get('/atur-waktu/countdown', [TimeSettingController::class, 'getCountdown'])->middleware(['auth', 'verified'])->name('admin.atur-waktu.countdown');

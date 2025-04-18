@@ -188,8 +188,10 @@
             <div class="col-md-3 col-lg-2 sidebar">
                 <div class="sidebar-header text-white p-4">
                     <div class="d-flex align-items-center justify-content-center">
-                        <img src="{{ asset('image/LambangSmk6.png') }}" class="sidebar-header-image me-3">
-                        <h4 class="m-0 poppins-medium sidebar-header-title">SMKN 6</h4>
+                        <a href="{{ route('kelulusan.index') }}" class="d-flex align-items-center text-decoration-none">
+                            <img src="{{ asset('image/LambangSmk6.png') }}" class="sidebar-header-image me-3">
+                            <h4 class="m-0 poppins-medium sidebar-header-title text-white">SMKN 6</h4>
+                        </a>
                     </div>
                 </div>
                 <div class="position-sticky sidebar-item poppins-regular pt-2 d-flex flex-column justify-content-center"

@@ -21,8 +21,36 @@
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
         }
 
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .page-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 60px;
+            /* Space for footer */
+        }
+
+        .footer {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            width: 100%;
+            margin-top: auto;
+        }
+
+        /* Poppins Font Classes */
         .poppins-thin {
             font-family: "Poppins", sans-serif;
             font-weight: 100;
@@ -133,12 +161,25 @@
     </style>
 </head>
 
-<body class="font-sans text-gray-900 antialiased">
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
-        <div class="w-full sm:max-w-md mt-6 px-6 py-4 shadow-md overflow-hidden sm:rounded-lg">
-            @yield('content')
+<body>
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container">
+                @yield('content')
+            </div>
         </div>
+
+        <footer class="footer py-3 text-center text-white poppins-regular">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="mb-1">© {{ date('Y') }} Razi Maulana & SMKN 6 - All Rights Reserved</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>

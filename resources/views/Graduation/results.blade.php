@@ -10,39 +10,45 @@
         </form>
     </div>
 
-    <div class="container d-flex flex-column min-vh-100 justify-content-center">
+    <div class="d-flex flex-column mt-5 justify-content-center align-items-center" style="min-height: calc(100vh - 180px);">
         <div id="result-container" class="my-5 border rounded-5 col-12 col-lg-10 mx-auto"
             style="@if ($user->status == 'Lulus') background-color: rgba(150, 195, 130, 0.5); @else background-color: rgba(163, 29, 29, 0.5); @endif">
 
-            <div class="result-header px-4 py-3 rounded-top align-items-center"
+            <div class="result-header px-4 py-3 rounded-top d-flex justify-content-center align-items-center"
                 style="backdrop-filter: blur(5px);
-                        @if ($user->status == 'Lulus') background-color: rgba(119, 178, 84);
-                        @else
-                            background-color: rgba(229, 32, 32); @endif">
-                <div class="d-flex">
+            @if ($user->status == 'Lulus') background-color: rgba(119, 178, 84);
+            @else
+                background-color: rgba(229, 32, 32); @endif">
+                <div class="text-center">
                     <h3 class="mb-0 text-white poppins-bold keterangan">
                         @if ($user->status == 'Lulus')
-                            SELAMAT! ANDA DINYATAKAN LULUS DARI SMKN 6 BALIKPAPAN
+                            SELAMAT! <br> ANDA DINYATAKAN
                         @else
-                            MAAF! ANDA DINYATAKAN TIDAK LULUS DARI SMKN 6 BALIKPAPAN
+                            MAAF! <br> ANDA DINYATAKAN
                         @endif
                     </h3>
                 </div>
             </div>
 
-            <!-- Main Content - Two Columns -->
             <div class="result-content py-4 rounded-bottom">
+
+                <div class="graduation-results text-center text-white mt-3 mb-5">
+                    <h1 class="poppins-bold fw-bold display-4 text-uppercase">
+                        {{ $user->status }}
+                    </h1>
+                </div>
+
                 <div class="row g-4">
-                    <!-- Left Column - Content -->
                     <div class="col-lg-7">
                         <div class="content-left px-5 h-100 d-flex flex-column justify-content-center">
-                            <div class="mb-1">
-                                <h5 class="text-white user-nisn poppins-light">NISN {{ $user->nis }}</h5>
+                            <div>
+                                <h5 class="text-white user-nisn poppins-light">NISN {{ $user->nisn }}</h5>
                             </div>
                             <div class="mb-2">
-                                <h1 class="text-white fw-bold text-uppercase poppins-bold user-name">{{ $user->name }}</h1>
+                                <h1 class="text-white fw-bold text-uppercase poppins-bold user-name">{{ $user->name }}
+                                </h1>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 @php
                                     $jurusanMapping = [
                                         'RPL' => [
@@ -79,6 +85,10 @@
                                 @endphp
                                 <h3 class="text-white fw-bold major poppins-bold text-uppercase">{{ $jurusan['nama'] }}</h3>
                             </div>
+                            <div class="mb-2">
+                                <h3 class="text-white fw-bold text-uppercase poppins-bold user-name">RATA - RATA : {{ $user->rata_rata }}
+                                </h3>
+                            </div>
                             <div class="d-flex align-items-center">
                                 <img src="/image/Major/{{ $jurusan['logo'] }}" width="90px" class="major-image me-4"
                                     alt="Logo Jurusan">
@@ -87,7 +97,6 @@
                         </div>
                     </div>
 
-                    <!-- Right Column - Photo -->
                     <div class="col-lg-5">
                         <div class="content-right pe-3 h-100 d-flex flex-column align-items-center justify-content-center">
                             <div class="student-photo rounded-3 overflow-hidden" style="width: 250px; height: 300px;">
@@ -96,7 +105,7 @@
                                         class="img-fluid h-110 w-100 object-fit-cover"
                                         onerror="this.src='/image/student-placeholder.jpg'">
                                 @else
-                                    <img src="/image/student-placeholder.jpg" alt="Foto Siswa Default"
+                                    <img src="/image/Default User Photo.png" alt="Foto Siswa Default"
                                         class="img-fluid h-110 w-100 object-fit-cover">
                                 @endif
                             </div>
@@ -114,7 +123,7 @@
             max-width: 1600px;
         }
 
-        .keterangan{
+        .keterangan {
             letter-spacing: 2px;
         }
 
@@ -122,19 +131,23 @@
             min-height: 350px;
         }
 
+        .graduation-results{
+            letter-spacing: 7px;
+        }
+
         .content-left {
             height: 100%;
         }
 
-        .user-nisn{
+        .user-nisn {
             letter-spacing: 2px;
         }
 
-        .user-name{
+        .user-name {
             letter-spacing: 3px;
         }
 
-        .major{
+        .major {
             letter-spacing: 2px;
         }
 
@@ -150,13 +163,6 @@
 
         .student-photo:hover {
             transform: scale(1.05);
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            position: relative;
         }
 
         h1.text-white {
