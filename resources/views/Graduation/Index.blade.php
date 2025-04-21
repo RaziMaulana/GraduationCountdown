@@ -12,9 +12,10 @@
 
     <div class="d-flex flex-column mt-4 justify-content-center align-items-center" style="min-height: calc(100vh - 180px);">
         <div id="countdown-container" class="text-center my-3 p-3 p-md-5 border rounded-5 mx-auto"
-             style="max-width: 800px; width: 100%; backdrop-filter: blur(10px); background-color: rgba(55, 55, 55, 0.1);">
+            style="max-width: 800px; width: 100%; backdrop-filter: blur(10px); background-color: rgba(55, 55, 55, 0.1);">
             <img src="image/LambangSmk6.png" class="img-fluid mb-3" style="max-width: 120px; height: auto;">
-            <h2 class="mb-4 text-white poppins-regular">PENGUMUMAN KELULUSAN <br> 2024/2025</h2>
+            <h2 class="mb-4 text-white poppins-regular">PENGUMUMAN KELULUSAN <br class="graduation-year"> <span
+                    id="graduationYear">2024/2025</span></h2>
 
             <div class="countdown-display d-flex flex-wrap justify-content-center gap-2 gap-md-3 poppins-regular mb-4">
                 <div class="countdown-item bg-light rounded-3 p-5 text-center" style="min-width: 80px; max-width: 140px;">
@@ -67,7 +68,7 @@
             font-size: 0.8rem;
         }
 
-        .countdown-end-time{
+        .countdown-end-time {
             letter-spacing: 1px;
         }
 
@@ -75,9 +76,11 @@
             .countdown-number {
                 font-size: 2.8rem;
             }
+
             .countdown-label {
                 font-size: 1rem;
             }
+
             .countdown-item {
                 min-width: 140px;
                 padding: 1.5rem !important;
@@ -143,6 +146,11 @@
                         if (!this.animationId) {
                             this.startCountdown();
                         }
+
+                        // Update graduation year
+                        if (data.graduationYear) {
+                            document.getElementById('graduationYear').textContent = data.graduationYear;
+                        }
                     } else {
                         this.showMessage('Waktu pengumuman belum ditetapkan', 'warning');
                         this.resetCountdown();
@@ -192,7 +200,8 @@
 
                     setTimeout(() => {
                         const userStatus = "{{ Auth::user()->status ?? 'Tidak Lulus' }}";
-                        window.location.href = "{{ route('kelulusan.hasil') }}/" + encodeURIComponent(userStatus);
+                        window.location.href = "{{ route('kelulusan.hasil') }}/" + encodeURIComponent(
+                            userStatus);
                     }, 1000);
 
                     return;

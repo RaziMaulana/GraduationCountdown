@@ -25,7 +25,8 @@ class GraduationTimeController extends Controller
 
         // Return timestamp dalam milidetik untuk JavaScript
         return response()->json([
-            'targetDate' => $countdown->target_date * 1000 // Convert to milliseconds
+            'targetDate' => $countdown->target_date * 1000, // Convert to milliseconds
+            'graduationYear' => $countdown->graduation_year // Tambahkan graduationYear
         ]);
     }
 }

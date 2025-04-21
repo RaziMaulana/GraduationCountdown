@@ -75,10 +75,12 @@
 
     <!-- Toast Notification - Updated with rounded corners -->
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
-        <div id="notificationToast" class="toast rounded-pill overflow-hidden" role="alert" aria-live="assertive" aria-atomic="true">
+        <div id="notificationToast" class="toast rounded-pill overflow-hidden" role="alert" aria-live="assertive"
+            aria-atomic="true">
             <div class="toast-body d-flex justify-content-between align-items-center bg-success text-white py-3 px-4">
                 <span class="fw-medium">Waktu Berhasil Diset ⌚</span>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
             </div>
         </div>
     </div>
@@ -149,9 +151,9 @@
                     try {
                         submitButton.disabled = true;
                         submitButton.innerHTML = `
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        Menyimpan...
-                    `;
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Menyimpan...
+        `;
 
                         const timestamp = Math.floor(new Date(this.targetDateInput.value).getTime() / 1000);
 
@@ -272,14 +274,16 @@
                         <span class="fw-medium">${message} ⌚</span>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
                     `;
-                    toastBody.className = 'd-flex justify-content-between align-items-center bg-success text-white py-3 px-4 toast-body';
+                    toastBody.className =
+                        'd-flex justify-content-between align-items-center bg-success text-white py-3 px-4 toast-body';
                 } else {
                     const toastBody = toastElement.querySelector('.toast-body');
                     toastBody.innerHTML = `
                         <span class="fw-medium">${message}</span>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
                     `;
-                    toastBody.className = 'd-flex justify-content-between align-items-center bg-danger text-white py-3 px-4 toast-body';
+                    toastBody.className =
+                        'd-flex justify-content-between align-items-center bg-danger text-white py-3 px-4 toast-body';
                 }
 
                 toastElement.className = 'toast rounded-3 overflow-hidden';

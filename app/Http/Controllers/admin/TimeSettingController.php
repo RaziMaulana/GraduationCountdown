@@ -51,13 +51,22 @@ class TimeSettingController extends Controller
                 throw new \Exception('Invalid date format');
             }
 
+            // Ambil tahun dari targetDate
+            $year = date('Y', $timestamp);
+            $previousYear = $year - 1;
+
+            // Format tahun kelulusan
+            $graduationYear = $previousYear . '/' . $year;
+
             $countdown->target_date = $timestamp;
+            $countdown->graduation_year = $graduationYear; // Simpan tahun kelulusan dalam format yang diinginkan
             $countdown->save();
 
             return response()->json([
                 'success' => true,
                 'timestamp' => $timestamp,
-                'human_readable' => date('Y-m-d H:i:s', $timestamp)
+                'human_readable' => date('Y-m-d H:i:s', $timestamp),
+                'graduation_year' => $graduationYear
             ]);
 
         } catch (\Exception $e) {

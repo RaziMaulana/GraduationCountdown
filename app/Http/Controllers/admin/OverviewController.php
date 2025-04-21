@@ -208,6 +208,12 @@ class OverviewController extends Controller
         }
     }
 
+    public function downloadExcelTemplate()
+    {
+        $path = public_path('templates/Student_Excel_Template.xlsx');
+        return response()->download($path);
+    }
+
     public function getStudentCount()
     {
         $count = User::whereDoesntHave('roles', function ($query) {

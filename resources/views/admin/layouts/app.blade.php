@@ -198,6 +198,12 @@
                     style="height: calc(100vh - 80px);">
                     <ul class="nav flex-column text-center">
                         <li class="nav-item mx-auto mb-3">
+                            <a class="poppins-regular nav-link {{ request()->routeIs('admin.accounts.index') ? 'active' : '' }} text-white py-2 px-4 rounded-pill"
+                                href="{{ route('admin.accounts.index') }}">
+                                <i class="fas fa-circle-user me-2"></i> ADMIN
+                            </a>
+                        </li>
+                        <li class="nav-item mx-auto mt-2 mb-2">
                             <a class="poppins-regular nav-link {{ request()->routeIs('admin.manajemen-data') ? 'active' : '' }} text-white py-2 px-4 rounded-pill"
                                 href="{{ route('admin.manajemen-data') }}">
                                 <i class="fas fa-chart-pie me-2"></i> MANAJEMEN

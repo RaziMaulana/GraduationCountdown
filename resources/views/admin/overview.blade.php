@@ -16,10 +16,29 @@
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <div class="alert alert-info mb-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Petunjuk Import:</strong>
+                        <ul class="mt-2 mb-0">
+                            <li>Download template Excel untuk memastikan format yang benar</li>
+                            <li>File harus berformat .xlsx atau .csv</li>
+                        </ul>
+                    </div>
+
+                    <div class="text-center mb-4">
+                        <a href="{{ asset('templates/Student_Excel_Template.xlsx') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-file-excel me-2"></i>Template Excel
+                        </a>
+                    </div>
+
                     <form id="importUserForm" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label for="file" class="form-label">File Excel</label>
-                            <input type="file" class="form-control" id="file" name="file" required>
+                            <input type="file" class="form-control" id="file" name="file"
+                                accept=".xlsx,.xls,.csv" required>
+                            <div class="form-text text-white-50">
+                                Format file: .xlsx, .xls, atau .csv (Maks. 2MB)
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -287,7 +306,7 @@
                         <i class="fas fa-info-circle me-2"></i>
                         <strong>Data yang akan dihapus:</strong>
                         <ul class="mb-0 mt-2">
-                            <li>Semua data siswa ({{ $studentCount }} records)</li>
+                            <li>Semua data siswa</li>
                             <li>Semua foto profil siswa</li>
                             <li>Data tidak bisa dikembalikan</li>
                         </ul>
@@ -415,7 +434,6 @@
 
 @push('scripts')
     <script>
-
         function updateDeleteAllButtonState() {
             $.ajax({
                 url: "{{ route('admin.manajemen-data.count') }}",
