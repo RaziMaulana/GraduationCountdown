@@ -8,7 +8,8 @@
 
                 <div class="text-center mb-4">
                     <img src="image/LambangSmk6.png" class="img-fluid mb-3" style="max-width: 120px; height: auto;">
-                    <h2 class="text-white Form-Header poppins-regular mb-4">PENGUMUMAN KELULUSAN <br> 2024/2025</h2>
+                    <h2 class="mb-4 text-white poppins-regular">PENGUMUMAN KELULUSAN <br class="graduation-year"> <span
+                            id="graduationYear">2024/2025</span></h2>
                 </div>
 
                 <form method="POST" action="{{ route('login') }}" class="px-4">
@@ -31,7 +32,9 @@
                     <div class="mb-5 mx-auto position-relative" style="max-width: 230px;">
                         <input type="password" class="form-control poppins-regular text-white text-center" id="password"
                             name="password" placeholder="PASSWORD" required>
-                        <span class="position-absolute {{ $errors->has('password') ? 'bottom-50' : 'top-50' }} end-0 translate-middle-y pe-3" style="cursor: pointer;">
+                        <span
+                            class="position-absolute {{ $errors->has('password') ? 'bottom-50' : 'top-50' }} end-0 translate-middle-y pe-3"
+                            style="cursor: pointer;">
                             <i class="bi bi-eye-slash text-white" id="togglePassword"></i>
                         </span>
                         @error('password')
@@ -95,22 +98,38 @@
     </style>
 
     <script>
-        document.getElementById('nisn').addEventListener('input', function(e) {
-            this.value = this.value.replace(/[^0-9]/g, '');
-        });
-
         document.addEventListener('DOMContentLoaded', function() {
+            fetch('/kelulusan/tahun')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.graduationYear) {
+                        document.getElementById('graduationYear').textContent = data.graduationYear;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching graduation year:', error);
+                });
+
+            // Password toggle and NISN validation
             const togglePassword = document.querySelector('#togglePassword');
             const password = document.querySelector('#password');
 
-            togglePassword.addEventListener('click', function() {
-                // Toggle the type attribute
-                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-                password.setAttribute('type', type);
+            if (togglePassword && password) {
+                togglePassword.addEventListener('click', function() {
+                    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                    password.setAttribute('type', type);
+                    this.classList.toggle('bi-eye');
+                    this.classList.toggle('bi-eye-slash');
+                });
+            }
 
-                // Toggle the icon
-                this.classList.toggle('bi-eye');
-                this.classList.toggle('bi-eye-slash');
+            document.getElementById('nisn')?.addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^0-9]/g, '');
             });
         });
     </script>

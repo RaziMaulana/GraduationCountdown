@@ -13,10 +13,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
 
-    Route::get('/', [AuthenticatedSessionController::class, 'create'])
+    Route::get('/kelulusan', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 
-    Route::post('/', [AuthenticatedSessionController::class, 'store']);
+    Route::get('/kelulusan/tahun', [AuthenticatedSessionController::class, 'getCountdown']);
+    Route::post('/kelulusan', [AuthenticatedSessionController::class, 'store']);
+
 
 });
 

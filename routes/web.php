@@ -13,7 +13,7 @@ use App\Http\Controllers\Graduation\GraduationTimeController;
 // });
 
 Route::prefix('kelulusan')->group(function () {
-    Route::get('/', [GraduationTimeController::class, 'GraduationTimeIndex'])->middleware(['auth', 'verified'])->name('kelulusan.index');
+    Route::get('/dashboard', [GraduationTimeController::class, 'GraduationTimeIndex'])->middleware(['auth', 'verified'])->name('kelulusan.index');
     Route::get('/countdown', [GraduationTimeController::class, 'getCountdown'])->middleware(['auth', 'verified'])->name('kelulusan.countdown');
     Route::get('/hasil/{status?}', [ResultController::class, 'ResultIndex'])->middleware(['auth', 'verified'])->name('kelulusan.hasil');
 });

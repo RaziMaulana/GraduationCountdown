@@ -36,7 +36,7 @@ class RegisteredUserController extends Controller
 
         $user = User::create([
             'name' => $request->name,
-            'nisn' => $request->nis,
+            'nisn' => $request->nisn,
         ]);
 
         event(new Registered($user));

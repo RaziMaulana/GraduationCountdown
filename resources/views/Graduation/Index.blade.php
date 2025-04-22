@@ -13,7 +13,7 @@
     <div class="d-flex flex-column mt-4 justify-content-center align-items-center" style="min-height: calc(100vh - 180px);">
         <div id="countdown-container" class="text-center my-3 p-3 p-md-5 border rounded-5 mx-auto"
             style="max-width: 800px; width: 100%; backdrop-filter: blur(10px); background-color: rgba(55, 55, 55, 0.1);">
-            <img src="image/LambangSmk6.png" class="img-fluid mb-3" style="max-width: 120px; height: auto;">
+            <img src="/image/LambangSmk6.png" class="img-fluid mb-3" style="max-width: 120px; height: auto;">
             <h2 class="mb-4 text-white poppins-regular">PENGUMUMAN KELULUSAN <br class="graduation-year"> <span
                     id="graduationYear">2024/2025</span></h2>
 

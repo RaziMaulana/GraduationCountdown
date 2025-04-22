@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Countdown;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -42,6 +43,16 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/kelulusan');
     }
+
+    public function getCountdown()
+    {
+        $countdown = Countdown::first();
+
+        return response()->json([
+            'graduationYear' => $countdown ? $countdown->graduation_year : '2024/2025'
+        ]);
+    }
+
 }
