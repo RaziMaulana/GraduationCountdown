@@ -34,7 +34,7 @@
 
                 <div class="graduation-results text-center text-white mt-3 mb-5">
                     <h1 class="poppins-bold fw-bold display-4 text-uppercase">
-                        {{ $user->status }}
+                        {{ strtoupper($user->status) }}
                     </h1>
                 </div>
 
