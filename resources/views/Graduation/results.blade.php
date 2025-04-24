@@ -1,13 +1,18 @@
 @extends('Graduation.layouts.app')
 
 @section('content')
-    <div class="position-absolute top-0 start-0 m-3">
-        <form method="POST" action="{{ route('logout') }}">
+    <div class="position-absolute z-3 top-0 start-0 m-3 d-flex align-items-center gap-2">
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="m-0">
             @csrf
             <button type="submit" class="btn btn-danger" title="Logout">
                 <i class="bi bi-box-arrow-left fs-4"></i>
             </button>
         </form>
+        @role('admin')
+            <a href="{{ route('admin.manajemen-data') }}" class="btn btn-primary" title="Admin Page">
+                <i class="bi bi-gear fs-4"></i>
+            </a>
+        @endrole
     </div>
 
     <div class="d-flex flex-column mt-5 justify-content-center align-items-center" style="min-height: calc(100vh - 180px);">
@@ -86,7 +91,8 @@
                                 <h3 class="text-white fw-bold major poppins-bold text-uppercase">{{ $jurusan['nama'] }}</h3>
                             </div>
                             <div class="mb-2">
-                                <h3 class="text-white fw-bold text-uppercase poppins-bold user-name">RATA - RATA : {{ $user->rata_rata }}
+                                <h3 class="text-white fw-bold text-uppercase poppins-bold user-name">RATA - RATA :
+                                    {{ $user->rata_rata }}
                                 </h3>
                             </div>
                             <div class="d-flex align-items-center">
@@ -131,7 +137,7 @@
             min-height: 350px;
         }
 
-        .graduation-results{
+        .graduation-results {
             letter-spacing: 7px;
         }
 

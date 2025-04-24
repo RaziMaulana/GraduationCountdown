@@ -1,13 +1,18 @@
 @extends('Graduation.layouts.app')
 
 @section('content')
-    <div class="position-absolute z-3 top-0 start-0 m-3">
-        <form id="logout-form" action="{{ route('logout') }}" method="POST">
+    <div class="position-absolute z-3 top-0 start-0 m-3 d-flex align-items-center gap-2">
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="m-0">
             @csrf
             <button type="submit" class="btn btn-danger" title="Logout">
                 <i class="bi bi-box-arrow-left fs-4"></i>
             </button>
         </form>
+        @role('admin')
+            <a href="{{ route('admin.manajemen-data') }}" class="btn btn-primary" title="Admin Page">
+                <i class="bi bi-gear fs-4"></i>
+            </a>
+        @endrole
     </div>
 
     <div class="d-flex flex-column mt-4 justify-content-center align-items-center" style="min-height: calc(100vh - 180px);">
